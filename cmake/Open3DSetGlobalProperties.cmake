@@ -174,9 +174,8 @@ function(open3d_set_global_properties target)
     endif()
 
     # Turn off fast math for IntelLLVM DPC++ compiler.
-    # Fast math does not work with some of our NaN handling logics.
-    target_compile_options(${target} PRIVATE
-        $<$<AND:$<CXX_COMPILER_ID:IntelLLVM>,$<NOT:$<COMPILE_LANGUAGE:ISPC>>>:-ffp-contract=on>)
+    # Fast math is turned off for clang by default even for -O3.
+    # TODO: We may make this optional and tune unit tests floating point precisions.
     target_compile_options(${target} PRIVATE
         $<$<AND:$<CXX_COMPILER_ID:IntelLLVM>,$<NOT:$<COMPILE_LANGUAGE:ISPC>>>:-fno-fast-math>)
 
